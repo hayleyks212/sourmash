@@ -1,4 +1,3 @@
 .snakemake
-
-*.fa.gz
-*.fa
+*.err
+*.out

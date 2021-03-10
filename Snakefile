@@ -1,5 +1,8 @@
 rule run_all_of_me:
-    input: "all.cmp.matrix.png"
+    input: "all.cmp.matrix.png",
+        expand("input/{n}.fa.gz", n=[1, 2, 3, 4, 5]),
+        expand("output/{n}.fa.gz.sig", n=[1, 2, 3, 4, 5]),
+        expand("output/all{n}", n=['.cmp.dendro.png', '.cmp', '.cmp.hist.png', '.cmp.labels.txt'])
     
 
 rule download_genomes:
@@ -41,4 +44,19 @@ rule plot_genomes:
         "all.cmp.dendro.png",
     shell: """
         sourmash plot {input.cmp}
+    """
+
+rule move_files:
+    input:
+       expand("{n}.fa.gz", n=[1, 2, 3, 4, 5]),
+        expand("{n}.fa.gz.sig", n=[1, 2, 3, 4, 5]),
+        expand("all{n}", n=['.cmp.dendro.png', '.cmp', '.cmp.hist.png', '.cmp.labels.txt'])
+    output:
+        expand("input/{n}.fa.gz", n=[1, 2, 3, 4, 5]),
+        expand("output/{n}.fa.gz.sig", n=[1, 2, 3, 4, 5]),
+        expand("output/all{n}", n=['.cmp.dendro.png', '.cmp', '.cmp.hist.png', '.cmp.labels.txt'])    
+    shell: """
+        mv *.fa.gz input/
+        mv *.fa.gz.sig output/
+        mv all* output/
     """
