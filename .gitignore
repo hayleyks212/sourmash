@@ -1,0 +1,4 @@
+.snakemake
+
+*.fa.gz
+*.fa
